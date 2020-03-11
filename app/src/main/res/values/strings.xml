@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Simple login</string>
+
+    <string name="attention">Atenção</string>
+    <string name="error_login">Usuário ou senha inválido, tente novamente</string>
+
+    <string name="logout_alert">Tem certeza que deseja sair?</string>
 </resources>
