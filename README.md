@@ -8,6 +8,8 @@ PoC to demonstrate instrumented tests using RobotPattern. This PoC has only a lo
 
 # Code sample
 
+### LoginActivityUITest
+
 ```kotlin
     @Test
     fun loginSuccessfully() {
@@ -46,4 +48,35 @@ PoC to demonstrate instrumented tests using RobotPattern. This PoC has only a lo
             Intents.intended(hasComponent(CreateAccountActivity::class.java.name))
         }
     }
+```
+
+### LoginRobot
+```kotlin
+    fun login(func: LoginRobot.() -> Unit) = LoginRobot().apply { func() }
+
+    class LoginRobot : BaseUITest() {
+        fun typeEmail(email: String) = fillEditText(R.id.editTextEmail, email)
+        fun typePassword(pass: String) = fillEditText(R.id.editTextPassword, pass)
+        fun clickLoginButton() = clickButton(R.id.buttonLogin)
+        fun clickCreateAccountButton() = clickButton(R.id.textViewNewAccount)
+        fun checkAlertDialog(@IdRes dialogTitle: Int) = alertDialog(dialogTitle)
+    }
+```
+
+### BaseUITest
+```kotlin 
+    open class BaseUITest {
+        fun fillEditText(@IdRes idRes: Int, text: String): ViewInteraction =
+            onView(withId(idRes))
+                .perform(typeText(text), closeSoftKeyboard())
+
+        fun clickButton(@IdRes idRes: Int): ViewInteraction =
+            onView(withId(idRes))
+                .perform(click())
+
+    fun alertDialog(@IdRes idRes: Int): ViewInteraction =
+        onView(withText(idRes))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+}
 ```
